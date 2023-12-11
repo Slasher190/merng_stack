@@ -1,29 +1,11 @@
 import { PrismaClient } from "@prisma/client";
+import { server } from "./src/app";
+import { startStandaloneServer } from "@apollo/server/standalone";
+
 
 const prisma = new PrismaClient();
 
-async function main() {
-  await prisma.user.create({
-    data: {
-      name: "Rich",
-      email: "hello@prisma.com",
-      posts: {
-        create: {
-          title: "My first post",
-          body: "Lots of really interesting stuff",
-          slug: "my-first-post",
-        },
-      },
-    },
-  });
-
-  const allUsers = await prisma.user.findMany({
-    include: {
-      posts: true,
-    },
-  });
-  console.dir(allUsers, { depth: null });
-}
+async function main() {}
 
 main()
   .catch(async (e) => {
@@ -33,3 +15,12 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
+
+const connect = async () => {
+  const { url } = await startStandaloneServer(server, {
+    listen: { port: parseInt(process.env.PORT || '8000') },
+  });
+  console.log(`🚀  Server ready at: ${url}`);
+};
+
+connect();
