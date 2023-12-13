@@ -84,17 +84,17 @@ export const userResolvers = {
 
         const data = {
           ...user_,
-          // address: async () => {
-          //   return (
-          //     user_ &&
-          //     user_.addressId &&
-          //     (await prisma.address.findUnique({
-          //       where: {
-          //         id: user_.addressId,
-          //       },
-          //     }))
-          //   );
-          // },
+          address: async () => {
+            return (
+              user_ &&
+              user_.addressId &&
+              (await prisma.address.findUnique({
+                where: {
+                  id: user_.addressId,
+                },
+              }))
+            );
+          },
         };
 
         return { success: true, message: "User Register Successful!!", data };
